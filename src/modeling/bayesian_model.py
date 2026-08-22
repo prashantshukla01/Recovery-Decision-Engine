@@ -183,7 +183,7 @@ def load_model_artifacts(path: str = MODEL_FILE_PATH) -> Tuple[az.InferenceData,
         else:
             train_df = pd.read_csv(train_path)
 
-        idata, preprocessor = fit_bayesian_model(train_df, draws=200, tune=200, chains=2, seed=42)
+        idata, preprocessor = fit_bayesian_model(train_df, draws=100, tune=100, chains=2, seed=42)
         save_model_artifacts(idata, preprocessor, path=path)
         return idata, preprocessor
 
