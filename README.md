@@ -1,6 +1,21 @@
+---
+title: Recovery Decision Engine API
+emoji: ⚡
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # Recovery Decision Engine
 
 An economics-aware, calibrated probabilistic agent designed for failed subscription payments. It decides whether recovery intervention is economically worthwhile, selects the optimal intervention (or abstains), executes it against Razorpay's test-mode REST API, verifies outcomes, and logs a complete audit trail.
+
+> **Live Deployments & MLOps Stack**:
+> - ⚡ **FastAPI Backend (Hugging Face Spaces)**: `https://huggingface.co/spaces/prashantshukla01/Recovery-Decision-Engine`
+> - 🎈 **Interactive Streamlit Demo UI**: `https://recovery-decision-engine.streamlit.app`
+> - 📊 **DagsHub Hosted MLOps & MLflow**: `https://dagshub.com/prashantshukla01/Recovery-Decision-Engine`
 
 > **Key Innovation**: Uses a **calibrated Bayesian hierarchical probabilistic model with honest uncertainty** (PyMC) driving a **deterministic, fail-closed policy engine** — not an uncalibrated LLM making money-adjacent decisions.
 

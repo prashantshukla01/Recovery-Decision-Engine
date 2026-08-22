@@ -1,0 +1,65 @@
+name: Scheduled Model Health & Calibration Monitor
+
+on:
+  schedule:
+    # Run every Sunday at 00:00 UTC
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Evaluate Model Calibration & Health
+        env:
+          PYTHONPATH: .
+        run: |
+          python -c "
+          import pandas as pd
+          from src.modeling.bayesian_model import load_model_artifacts
+          from src.modeling.predictor import estimate
+          from src.modeling.calibration_eval import compute_ece
+          from src.simulation.schemas import FailureContext
+
+          eval_df = pd.read_csv('data/eval.csv').head(100)
+          idata, preprocessor = load_model_artifacts('data/pymc_model_idata.pkl')
+
+          bayes_probs = []
+          outcomes = eval_df['outcome'].values
+
+          for _, row in eval_df.iterrows():
+              ctx = FailureContext(
+                  event_id=str(row['event_id']),
+                  decline_code=str(row['decline_code']),
+                  retry_count=int(row['retry_count']),
+                  hours_since_failure=float(row['hours_since_failure']),
+                  day_of_month=int(row['day_of_month']),
+                  customer_tenure_months=int(row['customer_tenure_months']),
+                  subscription_value=float(row['subscription_value']),
+                  prior_recovery_outcome=str(row['prior_recovery_outcome']),
+              )
+              est = estimate(ctx, str(row['action']), idata=idata, preprocessor=preprocessor)
+              bayes_probs.append(est.p_success)
+
+          ece = compute_ece(pd.Series(bayes_probs).values, outcomes)
+          print(f'[MONITOR] Evaluated 100 batch events. ECE = {ece:.4f}')
+
+          MAX_ALLOWED_ECE = 0.05
+          if ece > MAX_ALLOWED_ECE:
+              raise ValueError(f'Model health degradation detected! ECE={ece:.4f} > threshold {MAX_ALLOWED_ECE}')
+          print('[MONITOR] Model health check PASSED!')
+          "
