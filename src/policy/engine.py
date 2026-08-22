@@ -76,9 +76,10 @@ def evaluate_policy(
         "candidate_evaluations": candidate_details,
     }
 
-    # Policy Rule 1: All candidate EVs negative
-    if max_ev < 0.0 or best_action is None or best_action.action == "stop":
-        reasoning["decision_rule_triggered"] = "all_negative_ev_or_stop"
+    # Policy Rule 1: All candidate EVs non-viable (< ₹15.0 threshold) or low probability (<= 0.05)
+    MIN_VIABLE_EV_THRESHOLD: float = 15.0
+    if max_ev < MIN_VIABLE_EV_THRESHOLD or best_action is None or best_action.action == "stop" or best_action.p_success <= 0.05:
+        reasoning["decision_rule_triggered"] = "non_viable_ev_or_low_probability"
         return Decision(
             event_id=event_id,
             chosen="abstain",

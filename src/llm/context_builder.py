@@ -18,8 +18,13 @@ def fallback_rule_based_context(raw_event: Dict[str, Any]) -> FailureContext:
     event_id = str(raw_event.get("event_id", raw_event.get("id", "evt_unknown")))
 
     # Extract decline code from raw payload
-    raw_code = str(raw_event.get("decline_code", raw_event.get("error_code", "insufficient_funds"))).lower()
-    if "stolen" in raw_code or "lost" in raw_code:
+    has_recognized_fields = any(k in raw_event for k in ("decline_code", "error_code", "reason", "subscription_value", "amount", "event_id", "id"))
+    raw_code = str(raw_event.get("decline_code", raw_event.get("error_code", raw_event.get("reason", "")))).lower()
+
+    if not has_recognized_fields or not raw_code:
+        # Fail closed on unrecognized/corrupt payload: treat as hard decline
+        decline_code = "do_not_honor"
+    elif "stolen" in raw_code or "lost" in raw_code:
         decline_code = "stolen_card"
     elif "do_not_honor" in raw_code or "reject" in raw_code:
         decline_code = "do_not_honor"

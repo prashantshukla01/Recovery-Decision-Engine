@@ -24,6 +24,8 @@ antigravity-build-prompts.md
 *.pkl
 *.netcdf
 *.png
+*.db
+mlruns/
 
 # Keep data directory structure, but ignore large generated outputs if needed
 # data/*.csv
