@@ -5,6 +5,9 @@ import pandas as pd
 import numpy as np
 import json
 from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
 from src.simulation.schemas import FailureContext
 from src.modeling.predictor import estimate_all_actions
 from src.policy.engine import evaluate_policy

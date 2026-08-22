@@ -4,6 +4,9 @@ import os
 import pandas as pd
 import numpy as np
 import mlflow
+from dotenv import load_dotenv
+
+load_dotenv()
 from src.modeling.bayesian_model import load_model_artifacts, check_convergence
 from src.modeling.baseline_model import load_baseline_model, predict_baseline_p_success
 from src.modeling.predictor import estimate

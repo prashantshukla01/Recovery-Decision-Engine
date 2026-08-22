@@ -4,7 +4,10 @@ import sqlite3
 import logging
 from datetime import datetime
 from typing import List, Optional, Literal
+from dotenv import load_dotenv
 from pydantic import BaseModel, Field
+
+load_dotenv()
 from src.simulation.schemas import FailureContext
 from src.modeling.predictor import ActionEstimate
 from src.policy.schemas import Decision

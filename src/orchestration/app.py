@@ -1,8 +1,11 @@
 """FastAPI application serving Recovery Decision Engine agent pipeline endpoints."""
 
 from typing import Dict, Any, List
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel, Field
+
+load_dotenv()
 from src.orchestration.pipeline import PipelineRunner
 
 app = FastAPI(
