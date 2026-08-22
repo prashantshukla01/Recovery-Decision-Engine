@@ -73,9 +73,20 @@ def save_baseline_model(pipeline: Pipeline, path: str = BASELINE_FILE_PATH):
 
 
 def load_baseline_model(path: str = BASELINE_FILE_PATH) -> Pipeline:
-    """Loads baseline pipeline from disk."""
+    """Loads baseline pipeline from disk. Fits automatically if file is missing."""
     if not os.path.exists(path):
-        raise FileNotFoundError(f"Baseline model not found at {path}. Fit model first.")
+        print(f"[MODEL] Baseline model artifact '{path}' missing. Auto-fitting...")
+        train_path = "data/train.csv"
+        if not os.path.exists(train_path):
+            from src.simulation.generator import generate_dataset
+            train_df, _ = generate_dataset(num_events=500, seed=42)
+        else:
+            train_df = pd.read_csv(train_path)
+
+        pipeline = fit_baseline_model(train_df)
+        save_baseline_model(pipeline, path=path)
+        return pipeline
+
     with open(path, "rb") as f:
         pipeline = pickle.load(f)
     return pipeline

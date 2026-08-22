@@ -137,6 +137,7 @@ def fit_bayesian_model(
             draws=draws,
             tune=tune,
             chains=chains,
+            cores=1,
             target_accept=0.9,
             random_seed=seed,
             return_inferencedata=True,
@@ -172,9 +173,20 @@ def save_model_artifacts(idata: az.InferenceData, preprocessor: FeaturePreproces
 
 
 def load_model_artifacts(path: str = MODEL_FILE_PATH) -> Tuple[az.InferenceData, FeaturePreprocessor]:
-    """Loads fitted InferenceData and Preprocessor from disk."""
+    """Loads fitted InferenceData and Preprocessor from disk. Fits automatically if file is missing."""
     if not os.path.exists(path):
-        raise FileNotFoundError(f"Model artifacts not found at {path}. Run model fitting first.")
+        print(f"[MODEL] Artifact '{path}' missing. Automatically fitting model for environment...")
+        train_path = "data/train.csv"
+        if not os.path.exists(train_path):
+            from src.simulation.generator import generate_dataset
+            train_df, _ = generate_dataset(num_events=500, seed=42)
+        else:
+            train_df = pd.read_csv(train_path)
+
+        idata, preprocessor = fit_bayesian_model(train_df, draws=200, tune=200, chains=2, seed=42)
+        save_model_artifacts(idata, preprocessor, path=path)
+        return idata, preprocessor
+
     with open(path, "rb") as f:
         data = pickle.load(f)
     return data["idata"], data["preprocessor"]

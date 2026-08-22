@@ -8,10 +8,11 @@ venv/
 env/
 ENV/
 
-# IDE & OS files
+# IDE, OS, & Environment files
 .DS_Store
 .vscode/
 .idea/
+.env
 
 # Testing & notebooks
 .pytest_cache/
