@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE & OS files
+.DS_Store
+.vscode/
+.idea/
+
+# Testing & notebooks
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Antigravity prompts file (requested to ignore)
+antigravity-build-prompts.md
+
+# Large model artifacts & binary files
+*.pkl
+*.netcdf
+*.png
+
+# Keep data directory structure, but ignore large generated outputs if needed
+# data/*.csv
