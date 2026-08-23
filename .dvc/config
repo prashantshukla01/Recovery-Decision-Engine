@@ -1,2 +1,5 @@
 [core]
-    no_scm = True
+    remote = origin
+['remote "origin"']
+    url = https://dagshub.com/prashantshukla01/Recovery-Decision-Engine.dvc
+    ssl_verify = false
