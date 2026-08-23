@@ -8,6 +8,9 @@ from datetime import datetime
 from dotenv import load_dotenv
 
 load_dotenv()
+import os
+API_URL = os.environ.get("API_URL", "https://recovery-decision-engine.onrender.com")
+
 from src.simulation.schemas import FailureContext
 from src.modeling.predictor import estimate_all_actions
 from src.policy.engine import evaluate_policy
@@ -66,7 +69,7 @@ st.markdown('<div class="main-header">⚡ Recovery Decision Engine</div>', unsaf
 st.markdown('<div class="sub-header">Economics-Aware Subscription Recovery with Bayesian Uncertainty Gating</div>', unsafe_allow_html=True)
 
 # Preset Scenarios
-st.sidebar.markdown("### 🎯 One-Click Demo Presets")
+st.sidebar.markdown("### One-Click Demo Presets")
 
 preset_col1, preset_col2, preset_col3 = st.sidebar.columns(3)
 
@@ -103,7 +106,7 @@ if preset_col3.button("🔴 Abstain"):
 
 # Sidebar Form Input
 st.sidebar.markdown("---")
-st.sidebar.markdown("### 📝 Event Context Parameters")
+st.sidebar.markdown("### Event Context Parameters")
 
 with st.sidebar.form(key="context_form"):
     decline_code = st.selectbox(
@@ -119,7 +122,7 @@ with st.sidebar.form(key="context_form"):
     prior_recovery_outcome = st.selectbox("Prior Recovery Outcome", ["none", "recovered", "churned"])
     tau_threshold = st.slider("Uncertainty Threshold (tau)", 0.10, 0.50, 0.25, 0.05)
 
-    submit_btn = st.form_submit_button("🚀 Evaluate Recovery Decision")
+    submit_btn = st.form_submit_button("Evaluate Recovery Decision")
 
 # Main Content Execution
 ctx = FailureContext(
@@ -175,7 +178,7 @@ with col_metrics:
     st.metric("Uncertainty Gate (tau)", f"{tau_threshold:.2f}")
 
 st.markdown("---")
-st.markdown("### 📊 Candidate Action Estimates & EV Breakdown")
+st.markdown("### Candidate Action Estimates & EV Breakdown")
 
 # Format Table
 table_data = []
@@ -197,7 +200,7 @@ df_estimates = pd.DataFrame(table_data)
 st.dataframe(df_estimates, use_container_width=True)
 
 st.markdown("---")
-st.markdown("### 📜 Audit Log Inspection")
+st.markdown("### Audit Log Inspection")
 st.json({
     "event_id": decision.event_id,
     "timestamp": datetime.utcnow().isoformat() + "Z",
