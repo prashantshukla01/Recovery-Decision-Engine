@@ -79,8 +79,8 @@ Evaluated on 500 held-out evaluation events in `data/eval.csv`:
 | Metric | Baseline (Isotonic) | PyMC Hierarchical Bayesian |
 | :--- | :--- | :--- |
 | **Brier Score (vs Outcome)** | 0.1450 | **0.1442** |
-| **Expected Calibration Error (ECE)** | 0.0354 | **0.0243** *(~31% improvement)* |
-| **90% HDI Ground-Truth Coverage** | N/A (Point Estimate) | **67.6%** |
+| **Expected Calibration Error (ECE)** | 0.0354 | **0.0223** *(~37% improvement)* |
+| **90% HDI Ground-Truth Coverage** | N/A (Point Estimate) | **66.4%** |
 
 ---
 
