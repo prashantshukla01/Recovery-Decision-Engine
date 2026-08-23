@@ -18,7 +18,7 @@ A calibrated, uncertainty-aware decision engine for failed subscription payments
 
 Given a failed subscription payment, the engine estimates the probability of recovery for each candidate intervention — with an honest, calibrated confidence interval, not just a point score — computes the expected economic value of each option, and either executes the best one, escalates to a human, or abstains, all with a complete audit trail.
 
-**Live demo:** [Streamlit UI](https://recovery-decision-engine.streamlit.app) · **API:** [Hugging Face Spaces](https://huggingface.co/spaces/prashantshukla01/Recovery-Decision-Engine) · **Experiments:** [DagsHub MLflow](https://dagshub.com/prashantshukla01/Recovery-Decision-Engine.mlflow/#/experiments/0)
+**Live demo:** [Streamlit UI](https://recovery-decision-engine.streamlit.app) · **API Backend:** [Render API](https://recovery-decision-engine.onrender.com) · **Experiments:** [DagsHub MLflow](https://dagshub.com/prashantshukla01/Recovery-Decision-Engine.mlflow/#/experiments/0)
 
 ---
 
@@ -101,7 +101,7 @@ Full HLD/LLD: [`docs/architecture.md`](docs/architecture.md).
 | Experiment tracking | MLflow, hosted on DagsHub |
 | Data/model versioning | DVC, remote storage on DagsHub |
 | CI | GitHub Actions |
-| Backend hosting | Hugging Face Spaces (Docker) |
+| Backend hosting | Render.com (Free Tier Docker/Python) |
 | Demo UI | Streamlit Community Cloud |
 
 ## Results
@@ -135,7 +135,7 @@ Disabling uncertainty gating removes all escalation and pushes false interventio
 | Experiment tracking | DagsHub MLflow | [Experiments](https://dagshub.com/prashantshukla01/Recovery-Decision-Engine.mlflow/#/experiments/0) |
 | Model registry | DagsHub | [Registered models](https://dagshub.com/prashantshukla01/Recovery-Decision-Engine/models) |
 | Versioned data/artifacts | DagsHub DVC storage | [Browse data](https://dagshub.com/prashantshukla01/Recovery-Decision-Engine/src/main/data) |
-| API backend | Hugging Face Spaces | [Live API](https://huggingface.co/spaces/prashantshukla01/Recovery-Decision-Engine) |
+| API backend | Render.com | [Live API](https://recovery-decision-engine.onrender.com) |
 | Interactive demo | Streamlit Community Cloud | [Launch demo](https://recovery-decision-engine.streamlit.app) |
 
 To inspect MLflow locally instead: `./venv/bin/mlflow ui`, then open `http://127.0.0.1:5000`.
