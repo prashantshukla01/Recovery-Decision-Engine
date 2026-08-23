@@ -1,0 +1,5 @@
+outs:
+- md5: bbc1870c82443d8188c9bee493b6a4b6
+  size: 6717611
+  hash: md5
+  path: pymc_model_idata.pkl

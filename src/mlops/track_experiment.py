@@ -99,15 +99,29 @@ def log_experiment_to_mlflow():
             }
         )
 
-        # Log Artifacts
+        # 6. Log Artifacts & Registered Models
         if os.path.exists("data/reliability_diagram.png"):
-            mlflow.log_artifact("data/reliability_diagram.png")
+            mlflow.log_artifact("data/reliability_diagram.png", artifact_path="calibration_plots")
         if os.path.exists("data/decline_code_p_success.png"):
-            mlflow.log_artifact("data/decline_code_p_success.png")
-        if os.path.exists("data/pymc_model_idata.pkl"):
-            mlflow.log_artifact("data/pymc_model_idata.pkl")
+            mlflow.log_artifact("data/decline_code_p_success.png", artifact_path="calibration_plots")
 
-        print("MLflow experiment run logged successfully!")
+        # Register Baseline Calibrated Model in MLflow Model Registry
+        mlflow.sklearn.log_model(
+            sk_model=baseline_pipeline,
+            name="baseline_model",
+            registered_model_name="Recovery_Baseline_Isotonic_Model",
+            serialization_format="cloudpickle",
+        )
+        print("Logged and registered 'Recovery_Baseline_Isotonic_Model' in MLflow Model Registry.")
+
+        # Log PyMC artifact
+        if os.path.exists("data/pymc_model_idata.pkl"):
+            mlflow.log_artifact("data/pymc_model_idata.pkl", artifact_path="pymc_model_artifacts")
+            print("Logged PyMC model artifact 'data/pymc_model_idata.pkl' to MLflow.")
+
+        if mlflow.active_run():
+            run_id = mlflow.active_run().info.run_id
+            print(f"\nMLflow experiment run logged successfully! (Run ID: {run_id})")
         print(f"Run ID: {mlflow.active_run().info.run_id}")
 
 
